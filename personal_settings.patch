@@ -47,3 +47,18 @@ index 0eec1ae..cdb8759 100644
 +#                                       | difference(openshift_unscheduleable_nodes) }}"
 +#   roles:
 +#   - openshift_manage_node
+diff --git a/playbooks/common/openshift-cluster/set_master_launch_facts_tasks.yml b/playbooks/common/openshift-cluster/set_master_launch_facts_tasks.yml
+index 1187272..b4bcdb8 100644
+--- a/playbooks/common/openshift-cluster/set_master_launch_facts_tasks.yml
++++ b/playbooks/common/openshift-cluster/set_master_launch_facts_tasks.yml
+@@ -5,7 +5,9 @@
+   set_fact:
+     scratch_name: "{{ cluster_id }}-{{ k8s_type }}-{{ '%05x' | format(1048576 | random) }}"
+   register: master_names_output
+-  with_sequence: start=1 end={{ num_masters }}
++  with_items:
++    - 1
++  # with_sequence: start=1 end={{ num_masters }}
+
+ - set_fact:
+     master_names: "{{ master_names_output.results | oo_collect('ansible_facts') | oo_collect('scratch_name') }}"
